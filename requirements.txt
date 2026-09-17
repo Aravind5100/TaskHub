@@ -1,0 +1,31 @@
+# Direct dependencies, pinned to the versions this project is known to work on.
+# Regenerate a full transitive lock with:  pip freeze > requirements.lock
+
+# Web framework / server
+fastapi==0.141.1
+uvicorn==0.52.4
+# Required by OAuth2PasswordRequestForm to parse the /login form body.
+python-multipart==0.0.32
+
+# Database
+SQLAlchemy==2.0.52
+psycopg2-binary==2.9.13
+
+# Validation
+pydantic==2.13.5
+
+# Config
+python-dotenv==1.2.3
+
+# Auth.
+# bcrypt is held below 4.1 on purpose: passlib 1.7.4 reads bcrypt.__about__,
+# which 4.1 removed. The read is wrapped in a bare except, so newer bcrypt
+# only logs a spurious "error reading bcrypt version" warning rather than
+# failing -- but passlib has been unmaintained since 2020 and is not tested
+# against current bcrypt or Python 3.14, so the pin keeps a known-good pair.
+# Longer term, migrate to pwdlib[bcrypt] or call bcrypt directly.
+passlib==1.7.4
+bcrypt==4.0.1
+# python-jose is likewise unmaintained; pyjwt is the better-supported choice
+# if this is ever revisited.
+python-jose[cryptography]==3.5.0
