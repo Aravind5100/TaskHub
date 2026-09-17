@@ -1,5 +1,6 @@
 from database import Base, engine, get_db
 from fastapi import FastAPI, Depends,HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from schemas import TaskCreate, TaskResponse, TaskUpdate, UserCreate, UserResponse
 from sqlalchemy.exc import IntegrityError
@@ -15,6 +16,20 @@ app = FastAPI(
     "and manage tasks that only they can see.",
     version="0.1.0",
 )
+
+# The frontend (taskhub-ui) is a separate Vite dev server on a different
+# origin, so the browser enforces CORS on every request it makes here.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to TaskHub API. Visit /docs for the interactive API documentation."} 
 
 @app.post("/tasks/", response_model=TaskResponse)
 def create_task(task: TaskCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
