@@ -1,17 +1,20 @@
 # TaskHub UI
 
-A minimal, subtle frontend for the [TaskHub API](../task-api). React + TypeScript +
-Vite, no UI framework — a hand-rolled design system in `src/index.css`
-(neutral off-white surfaces, a single muted indigo accent, no shadows or
-gradients).
+A minimal, subtle frontend for the TaskHub API. React + TypeScript + Vite, no
+UI framework — a hand-rolled design system in `src/index.css` (neutral
+off-white surfaces, a single muted indigo accent, no shadows or gradients).
 
 Talks to the API over CORS as a separate origin, per its own `VITE_API_URL`.
+
+This is one half of the TaskHub project. The backend (FastAPI + PostgreSQL)
+lives on the `backend` branch of this same repo — check out that branch and
+follow its README to get the API running before starting this UI.
 
 ---
 
 ## Setup
 
-Requires Node and a running TaskHub API (see `../task-api/README.md`).
+Requires Node and a running TaskHub API (defaults to `http://127.0.0.1:8000`).
 
 ```bash
 npm install
@@ -20,24 +23,25 @@ npm run dev
 ```
 
 Opens at http://localhost:5173. The backend must allow this origin in its
-CORS config — `task-api/main.py` already whitelists `http://localhost:5173`.
+CORS config — the `backend` branch's `main.py` already whitelists
+`http://localhost:5173`.
 
 ## Structure
 
 ```
 src/
-├── api.ts                    Typed fetch wrapper for every backend endpoint
-├── AuthContext.tsx            Token/username state, persisted to localStorage
+├── api.ts                  Typed fetch wrapper for every backend endpoint
+├── AuthContext.tsx          Token/username state, persisted to localStorage
 ├── components/
-│   ├── ProtectedRoute.tsx     Redirects to /login when there's no token
-│   └── TaskRow.tsx            One task: checkbox, inline edit, delete
+│   ├── ProtectedRoute.tsx   Redirects to /login when there's no token
+│   └── TaskRow.tsx          One task: checkbox, inline edit, delete
 ├── pages/
 │   ├── Login.tsx
-│   ├── Register.tsx           Registers, then logs in immediately (register
-│   │                          doesn't return a token)
-│   └── Tasks.tsx               List + quick-add; owns all task state
-├── App.tsx                     Routes
-└── index.css                   The entire design system
+│   ├── Register.tsx         Registers, then logs in immediately (register
+│   │                        doesn't return a token)
+│   └── Tasks.tsx             List + quick-add; owns all task state
+├── App.tsx                   Routes
+└── index.css                 The entire design system
 ```
 
 ## Notes
